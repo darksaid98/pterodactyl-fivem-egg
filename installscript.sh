@@ -53,7 +53,7 @@ if [ ! -d "./alpine/" ] && [ ! -d "./resources/" ]; then
     echo "Server config file already exists. Skipping download of new one."
   else
     echo "Downloading default FiveM server config..."
-    curl https://raw.githubusercontent.com/parkervcp/eggs/master/gta/fivem/server.cfg >> server.cfg
+    curl https://raw.githubusercontent.com/darksaid98/pterodactyl-fivem-egg/master/server.cfg >> server.cfg
   fi
 
   # Clone resources repo from git or install FiveM default resources
