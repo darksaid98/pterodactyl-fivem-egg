@@ -28,17 +28,6 @@ if [ ! -d "./alpine/" ] && [ ! -d "./resources/" ]; then
     fi
   fi
 
-  # Grab download link from DOWNLOAD_URL
-  if [ ! -z "${DOWNLOAD_URL}" ]; then
-    if curl --output /dev/null --silent --head --fail ${DOWNLOAD_URL}; then
-      echo -e "Download link is valid. Setting download link to ${DOWNLOAD_URL}."
-      DOWNLOAD_LINK=${DOWNLOAD_URL}
-    else
-      echo -e "Download link is invalid. Exiting."
-      exit 2
-    fi
-  fi
-
   # Download artifact and get filetype
   echo -e "Running curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*/}..."
   curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*/}
