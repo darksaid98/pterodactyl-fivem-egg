@@ -13,7 +13,7 @@
         "quay.io\/darksaid98\/pterodactyl-images:base_debian"
     ],
     "file_denylist": [],
-    "startup": "$(pwd)\/alpine\/opt\/cfx-server\/ld-musl-x86_64.so.1 --library-path \"$(pwd)\/alpine\/usr\/lib\/v8\/:$(pwd)\/alpine\/lib\/:$(pwd)\/alpine\/usr\/lib\/\" -- $(pwd)\/alpine\/opt\/cfx-server\/FXServer +set citizen_dir $(pwd)\/alpine\/opt\/cfx-server\/citizen\/ +set sv_licenseKey {{FIVEM_LICENSE}} +set steam_webApiKey {{STEAM_WEBAPIKEY}} +set onesync {{ONESYNC}} +set onesync_population {{ONESYNC_POPULATION}} +set sv_maxclients {{MAX_PLAYERS}}  +set onesync_distanceCullVehicles {{DISTANCECULL_VEHICLES}} +set onesync_forceMigration {{FORCE_MIGRATION}} +set onesync_workaround763185 {{ONESYNC_WORKAROUND}} +set serverProfile default +set svgui_disable {{SVGUI_DISABLE}} +setr voice_use3dAudio {{VOICE_USE3DAUDIO}} +setr voice_useSendingRangeOnly {{VOICE_USESENDINGRANGEONLY}} +setr voice_useNativeAudio {{VOICE_USENATIVEAUDIO}} +set sv_requestParanoia = {{SV_REQUESTPARANOIA}} +set sv_enforceGameBuild {{SV_GAMEBUILD}} +set netevents_logToConsole {{SV_NETTOCONSOLE}} +set netevents_logToFile {{SV_LOGNETTOFILE}} +set txAdminPort {{TXADMIN_PORT}} $( [ \"$TXADMIN_ENABLE\" == \"1\" ] || printf %s '+exec server.cfg' )",
+    "startup": "$(pwd)\/alpine\/opt\/cfx-server\/ld-musl-x86_64.so.1 --library-path \"$(pwd)\/alpine\/usr\/lib\/v8\/:$(pwd)\/alpine\/lib\/:$(pwd)\/alpine\/usr\/lib\/\" -- $(pwd)\/alpine\/opt\/cfx-server\/FXServer +set citizen_dir $(pwd)\/alpine\/opt\/cfx-server\/citizen\/ +set sv_licenseKey {{FIVEM_LICENSE}} +set steam_webApiKey {{STEAM_WEBAPIKEY}} +set sv_maxclients {{MAX_PLAYERS}} +sv_hostname '{{SERVER_HOSTNAME}}' +sets sv_projectName '{{SERVER_PNAME}}' +sets sv_projectDesc '{{SERVER_PDESC}}' +set onesync {{ONESYNC}} +set onesync_population {{ONESYNC_POPULATION}} +set onesync_distanceCullVehicles {{DISTANCECULL_VEHICLES}} +set onesync_forceMigration {{FORCE_MIGRATION}} +set onesync_workaround763185 {{ONESYNC_WORKAROUND}} +set serverProfile default +set svgui_disable {{SVGUI_DISABLE}} +setr voice_use3dAudio {{VOICE_USE3DAUDIO}} +setr voice_useSendingRangeOnly {{VOICE_USESENDINGRANGEONLY}} +setr voice_useNativeAudio {{VOICE_USENATIVEAUDIO}} +set sv_requestParanoia = {{SV_REQUESTPARANOIA}} +set sv_enforceGameBuild {{SV_GAMEBUILD}} +set netevents_logToConsole {{SV_NETTOCONSOLE}} +set netevents_logToFile {{SV_LOGNETTOFILE}} +set txAdminPort {{TXADMIN_PORT}} $( [ \"$TXADMIN_ENABLE\" == \"1\" ] || printf %s '+exec server.cfg' )",
     "config": {
         "files": "{\r\n    \"server.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {}\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"succeeded. Welcome!\",\r\n    \"userInteraction\": []\r\n}",
@@ -29,15 +29,6 @@
     },
     "variables": [
         {
-            "name": "FiveM License Key",
-            "description": "Required to start the service. Get your keys at https:\/\/keymaster.fivem.net\/",
-            "env_variable": "FIVEM_LICENSE",
-            "default_value": "",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:32"
-        },
-        {
             "name": "Max Players",
             "description": "Sets the maximum player count.",
             "env_variable": "MAX_PLAYERS",
@@ -48,9 +39,27 @@
         },
         {
             "name": "Server Hostname",
-            "description": "The name that shows up in the server browser.",
+            "description": "The name that shows up when selecting the server in the server browser.",
             "env_variable": "SERVER_HOSTNAME",
             "default_value": "My new FXServer!",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string"
+        },
+        {
+            "name": "Project Name",
+            "description": "The name that shows up in the server browser.",
+            "env_variable": "SERVER_PNAME",
+            "default_value": "My Server Name",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string"
+        },
+        {
+            "name": "Project Description",
+            "description": "The description that shows up in the server browser.",
+            "env_variable": "SERVER_PDESC",
+            "default_value": "Default project description. Please change this in config.",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string"
@@ -65,22 +74,13 @@
             "rules": "nullable|string|max:50"
         },
         {
-            "name": "Download Link",
-            "description": "If this is not empty, the server artifact will be downloaded from this link.\r\n\r\nThe file you link to needs to be an fx.tar.zx file.\r\n\r\nExample:\r\nhttps:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/1626-8c06e8bc3ed7e6690c6c2d9e0b90e29df65b3ea6\/fx.tar.xz\r\n\r\nI recommend using the 'FiveM Version' setting over this and leaving this empty.",
-            "env_variable": "DOWNLOAD_URL",
-            "default_value": "",
+            "name": "FiveM Game Build",
+            "description": "The client GTA build the server should be on. Current possible values are:\r\n2189: Cayo Perico Update. \r\n2060: Diamond Casino Heist Update. \r\n1604: Arena Wars Update. The most stable game version available.",
+            "env_variable": "SV_GAMEBUILD",
+            "default_value": "1604",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "string|nullable"
-        },
-        {
-            "name": "Steam Web Api Key",
-            "description": "Use your Steam WebApiKey or set to 'none'. Get your key at https:\/\/steamcommunity.com\/dev\/apikey\/.",
-            "env_variable": "STEAM_WEBAPIKEY",
-            "default_value": "none",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string"
+            "rules": "required|string|max:4"
         },
         {
             "name": "Onesync",
@@ -105,6 +105,115 @@
             "description": "Only use this with Onesync enabled! Enable or disable force migration.",
             "env_variable": "FORCE_MIGRATION",
             "default_value": "true",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|in:0,false,1,true"
+        },
+        {
+            "name": "Onesync Workaround",
+            "description": "Enable onesync workaround.",
+            "env_variable": "ONESYNC_WORKAROUND",
+            "default_value": "true",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|in:0,false,1,true"
+        },
+        {
+            "name": "Onesync Population",
+            "description": "Enables or disables population on Onesync.",
+            "env_variable": "ONESYNC_POPULATION",
+            "default_value": "true",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|in:0,false,1,true"
+        },
+        {
+            "name": "UseNativeAudio",
+            "description": "Enable or disable Native audio. You should be using this for the best possible VOIP. Greatly superior to 'Use3dAudio'.",
+            "env_variable": "VOICE_USENATIVEAUDIO",
+            "default_value": "true",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|in:0,false,1,true"
+        },
+        {
+            "name": "UseSendingRangeOnly",
+            "description": "Use sending range only.",
+            "env_variable": "VOICE_USESENDINGRANGEONLY",
+            "default_value": "true",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|in:0,false,1,true"
+        },
+        {
+            "name": "Use3dAudio",
+            "description": "Enable or disable 3d audio. Does nothing if 'UseNativeAudio' is set to true.",
+            "env_variable": "VOICE_USE3DAUDIO",
+            "default_value": "false",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|in:0,false,1,true"
+        },
+        {
+            "name": "Request Paranoia",
+            "description": "A way to block proxy-based HTTP floods. Read: https:\/\/github.com\/citizenfx\/fivem\/commit\/f7c5493e5f4040933c4d9d505e4d2989e4149567",
+            "env_variable": "SV_REQUESTPARANOIA",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|integer|between:0,3"
+        },
+        {
+            "name": "Log Network Events To Console",
+            "description": "Logs net events to the server console. Read this commit: https:\/\/github.com\/citizenfx\/fivem\/pull\/658\/commits\/c4e3d98e30a7aeefd647d13c9570517cbf6b4a1a",
+            "env_variable": "SV_NETTOCONSOLE",
+            "default_value": "false",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|in:0,false,1,true"
+        },
+        {
+            "name": "Log Network Events To File",
+            "description": "Log net events to a file. Example value 'filename.txt', or leave empty to disable. Read commit: https:\/\/github.com\/citizenfx\/fivem\/pull\/658\/commits\/a6a7bfa88aee09bf585de51f320f2b8f5127c063",
+            "env_variable": "SV_LOGNETTOFILE",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "FiveM License Key",
+            "description": "Required to start the service. Get your keys at https:\/\/keymaster.fivem.net\/",
+            "env_variable": "FIVEM_LICENSE",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:32"
+        },
+        {
+            "name": "Steam Web Api Key",
+            "description": "Use your Steam WebApiKey or set to 'none'. Get your key at https:\/\/steamcommunity.com\/dev\/apikey\/.",
+            "env_variable": "STEAM_WEBAPIKEY",
+            "default_value": "none",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string"
+        },
+        
+        {
+            "name": "Clear Cache",
+            "description": "Do you wish to automatically clear the server cache folder on startup?",
+            "env_variable": "CACHE_CLEAR",
+            "default_value": "false",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|in:0,false,1,true"
+        },
+        {
+            "name": "Git Automatic Updates",
+            "description": "Do you wish to enable automatic updates from GitHub? If you are installing the server now, this will download the git repo.",
+            "env_variable": "GIT_ENABLED",
+            "default_value": "false",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|in:0,false,1,true"
@@ -146,18 +255,9 @@
             "rules": "required|string|max:30"
         },
         {
-            "name": "Automatic Update",
-            "description": "Do you wish to enable automatic updates from GitHub? If you are installing the server now, this will download the git repo.",
-            "env_variable": "GIT_ENABLED",
-            "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Clear Cache",
-            "description": "Do you wish to automatically clear the server cache folder on startup?",
-            "env_variable": "CACHE_CLEAR",
+            "name": "Enable txAdmin",
+            "description": "Enables txAdmin.\\r\\n\\r\\nset to true to enable. (default is 0 or false)",
+            "env_variable": "TXADMIN_ENABLE",
             "default_value": "false",
             "user_viewable": true,
             "user_editable": true,
@@ -173,24 +273,6 @@
             "rules": "required|string|max:20"
         },
         {
-            "name": "Enable txadmin",
-            "description": "Enables txadmin.\\r\\n\\r\\nset to true to enable. (default is 0 or false)",
-            "env_variable": "TXADMIN_ENABLE",
-            "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Onesync Population",
-            "description": "Enables or disables population on Onesync.",
-            "env_variable": "ONESYNC_POPULATION",
-            "default_value": "true",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
             "name": "Svgui Disabled",
             "description": "Enabel or disable svgui, doesn't work on linux anyways.",
             "env_variable": "SVGUI_DISABLE",
@@ -198,78 +280,6 @@
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Use3dAudio",
-            "description": "Enable or disable 3d audio. Does nothing if 'UseNativeAudio' is set to true.",
-            "env_variable": "VOICE_USE3DAUDIO",
-            "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "UseSendingRangeOnly",
-            "description": "Use sending range only.",
-            "env_variable": "VOICE_USESENDINGRANGEONLY",
-            "default_value": "true",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "UseNativeAudio",
-            "description": "Enable or disable Native audio. You should be using this for the best possible VOIP. Greatly superior to 'Use3dAudio'.",
-            "env_variable": "VOICE_USENATIVEAUDIO",
-            "default_value": "true",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Request Paranoia",
-            "description": "A way to block proxy-based HTTP floods. Read: https:\/\/github.com\/citizenfx\/fivem\/commit\/f7c5493e5f4040933c4d9d505e4d2989e4149567",
-            "env_variable": "SV_REQUESTPARANOIA",
-            "default_value": "0",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|integer|between:0,3"
-        },
-        {
-            "name": "Onesync Workaround",
-            "description": "Enable onesync workaround.",
-            "env_variable": "ONESYNC_WORKAROUND",
-            "default_value": "true",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "FiveM Game Build",
-            "description": "The client GTA build the server should be on. Current possible values are:\r\n2189: Cayo Perico Update. \r\n2060: Diamond Casino Heist Update. \r\n1604: Arena Wars Update. The most stable game version available.",
-            "env_variable": "SV_GAMEBUILD",
-            "default_value": "1604",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:4"
-        },
-        {
-            "name": "Log Network Events To Console",
-            "description": "Logs net events to the server console. Read this commit: https:\/\/github.com\/citizenfx\/fivem\/pull\/658\/commits\/c4e3d98e30a7aeefd647d13c9570517cbf6b4a1a",
-            "env_variable": "SV_NETTOCONSOLE",
-            "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Log Network Events To File",
-            "description": "Log net events to a file. Example value 'filename.txt', or leave empty to disable. Read commit: https:\/\/github.com\/citizenfx\/fivem\/pull\/658\/commits\/a6a7bfa88aee09bf585de51f320f2b8f5127c063",
-            "env_variable": "SV_LOGNETTOFILE",
-            "default_value": "",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "nullable|string"
         }
     ]
 }
