@@ -4,7 +4,7 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-06-14T19:16:36-04:00",
+    "exported_at": "2021-06-14T21:11:41-04:00",
     "name": "FiveM",
     "author": "parker@parkervcp.com",
     "description": "A new FiveM egg with additional customization and some minor complex functionality.",
@@ -13,9 +13,9 @@
         "quay.io\/darksaid98\/pterodactyl-images:base_debian"
     ],
     "file_denylist": [],
-    "startup": "$(pwd)\/alpine\/opt\/cfx-server\/ld-musl-x86_64.so.1 --library-path \"$(pwd)\/alpine\/usr\/lib\/v8\/:$(pwd)\/alpine\/lib\/:$(pwd)\/alpine\/usr\/lib\/\" -- $(pwd)\/alpine\/opt\/cfx-server\/FXServer +set citizen_dir $(pwd)\/alpine\/opt\/cfx-server\/citizen\/ +set sv_licenseKey {{FIVEM_LICENSE}} +set steam_webApiKey {{STEAM_WEBAPIKEY}} +set sv_maxclients {{MAX_PLAYERS}} +sv_hostname '{{SERVER_HOSTNAME}}' +sets sv_projectName '{{SERVER_PNAME}}' +sets sv_projectDesc '{{SERVER_PDESC}}' +set onesync {{ONESYNC}} +set onesync_population {{ONESYNC_POPULATION}} +set onesync_distanceCullVehicles {{DISTANCECULL_VEHICLES}} +set onesync_forceMigration {{FORCE_MIGRATION}} +set onesync_workaround763185 {{ONESYNC_WORKAROUND}} +set serverProfile default +set svgui_disable {{SVGUI_DISABLE}} +setr voice_use3dAudio {{VOICE_USE3DAUDIO}} +setr voice_useSendingRangeOnly {{VOICE_USESENDINGRANGEONLY}} +setr voice_useNativeAudio {{VOICE_USENATIVEAUDIO}} +set sv_requestParanoia = {{SV_REQUESTPARANOIA}} +set sv_enforceGameBuild {{SV_GAMEBUILD}} +set netevents_logToConsole {{SV_NETTOCONSOLE}} +set netevents_logToFile {{SV_LOGNETTOFILE}} +set txAdminPort {{TXADMIN_PORT}} $( [ \"$TXADMIN_ENABLE\" == \"1\" ] || printf %s '+exec server.cfg' )",
+    "startup": "$(pwd)\/alpine\/opt\/cfx-server\/ld-musl-x86_64.so.1 --library-path \"$(pwd)\/alpine\/usr\/lib\/v8\/:$(pwd)\/alpine\/lib\/:$(pwd)\/alpine\/usr\/lib\/\" -- $(pwd)\/alpine\/opt\/cfx-server\/FXServer +set citizen_dir $(pwd)\/alpine\/opt\/cfx-server\/citizen\/ +set sv_licenseKey \"{{FIVEM_LICENSE}}\" +set steam_webApiKey \"{{STEAM_WEBAPIKEY}}\" +set sv_maxclients {{MAX_PLAYERS}} +sv_hostname \"{{SERVER_HOSTNAME}}\" +sets sv_projectName \"{{SERVER_PNAME}}\" +sets sv_projectDesc \"{{SERVER_PDESC}}\" +set onesync {{ONESYNC_ENABLED}} +set onesync_population {{ONESYNC_POPULATION}} +set onesync_distanceCullVehicles {{DISTANCECULL_VEHICLES}} +set onesync_forceMigration {{FORCE_MIGRATION}} +set onesync_workaround763185 {{ONESYNC_WORKAROUND}} +set serverProfile default +set svgui_disable {{SVGUI_DISABLE}} +setr voice_use3dAudio {{VOICE_USE3DAUDIO}} +setr voice_useSendingRangeOnly {{VOICE_USESENDINGRANGEONLY}} +setr voice_useNativeAudio {{VOICE_USENATIVEAUDIO}} +set sv_requestParanoia = {{SV_REQUESTPARANOIA}} +set sv_enforceGameBuild {{SV_GAMEBUILD}} +set netevents_logToConsole {{SV_NETTOCONSOLE}} +set netevents_logToFile {{SV_LOGNETTOFILE}} +set txAdminPort {{TXADMIN_PORT}} $( [ \"$TXADMIN_ENABLE\" == \"1\" ] || printf %s '+exec server.cfg' )",
     "config": {
-        "files": "{\r\n    \"server.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"endpoint_add_tcp\": \"endpoint_add_tcp \\\"0.0.0.0:{{server.build.default.port}}\\\"\",\r\n            \"endpoint_add_udp\": \"endpoint_add_udp \\\"0.0.0.0:{{server.build.default.port}}\\\"\",\r\n            \"set steam_webApiKey\": \"set steam_webApiKey {{server.build.env.STEAM_WEBAPIKEY}}\",\r\n            \"sets sv_projectName\": \"sets sv_projectName \\\"{{server.build.env.SERVER_PNAME}}\\\"\",\r\n            \"sets sv_projectDesc\": \"sets sv_projectDesc \\\"{{server.build.env.SERVER_PDESC}}\\\"\"\r\n        }\r\n    }\r\n}",
+        "files": "{\r\n    \"server.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"endpoint_add_tcp\": \"endpoint_add_tcp \\\"0.0.0.0:{{server.build.default.port}}\\\"\",\r\n            \"endpoint_add_udp\": \"endpoint_add_udp \\\"0.0.0.0:{{server.build.default.port}}\\\"\",\r\n            \"set steam_webApiKey\": \"set steam_webApiKey \\\"{{server.build.env.STEAM_WEBAPIKEY}}\\\"\",\r\n            \"sv_hostname\": \"sv_hostname \\\"{{server.build.env.SERVER_HOSTNAME}}\\\"\",\r\n            \"sets sv_projectName\": \"sets sv_projectName \\\"{{server.build.env.SERVER_PNAME}}\\\"\",\r\n            \"sets sv_projectDesc\": \"sets sv_projectDesc \\\"{{server.build.env.SERVER_PDESC}}\\\"\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"succeeded. Welcome!\",\r\n    \"userInteraction\": []\r\n}",
         "logs": "{\r\n    \"custom\": true,\r\n    \"location\": \"logs\/latest.log\"\r\n}",
         "stop": "^C"
@@ -85,7 +85,7 @@
         {
             "name": "Onesync",
             "description": "Set to 'on' to enable Onesync. Set to 'off' if you want to disable Onesync. Optionally you can use 'legacy' however it is strongly advised against. If you are running a server you should have Onesync enabled.",
-            "env_variable": "ONESYNC",
+            "env_variable": "ONESYNC_ENABLED",
             "default_value": "on",
             "user_viewable": true,
             "user_editable": true,
