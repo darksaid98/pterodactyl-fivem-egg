@@ -18,7 +18,7 @@
         "files": "{\r\n    \"server.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"endpoint_add_tcp\": \"endpoint_add_tcp \\\"0.0.0.0:{{server.build.default.port}}\\\"\",\r\n            \"endpoint_add_udp\": \"endpoint_add_udp \\\"0.0.0.0:{{server.build.default.port}}\\\"\",\r\n            \"set steam_webApiKey\": \"set steam_webApiKey \\\"{{server.build.env.STEAM_WEBAPIKEY}}\\\"\",\r\n            \"sv_hostname\": \"sv_hostname \\\"{{server.build.env.SERVER_HOSTNAME}}\\\"\",\r\n            \"sets sv_projectName\": \"sets sv_projectName \\\"{{server.build.env.SERVER_PNAME}}\\\"\",\r\n            \"sets sv_projectDesc\": \"sets sv_projectDesc \\\"{{server.build.env.SERVER_PDESC}}\\\"\"\r\n        }\r\n    }\r\n}",
         "startup": "{\r\n    \"done\": \"succeeded. Welcome!\",\r\n    \"userInteraction\": []\r\n}",
         "logs": "{\r\n    \"custom\": true,\r\n    \"location\": \"logs\/latest.log\"\r\n}",
-        "stop": "^C"
+        "stop": "quit"
     },
     "scripts": {
         "installation": {
