@@ -2,7 +2,7 @@
 
 > Why create this, what is it for?
 
-This is simply a fork/edit of [parkervcp](https://github.com/parkervcp)'s FiveM egg found [here](https://github.com/parkervcp/eggs/tree/master/gta/fivem), which I use for my FiveM servers.
+This is simply a fork/edit of [parkervcp](https://github.com/parkervcp)'s FiveM egg found [here](https://github.com/parkervcp/eggs/tree/master/game_eggs/gta/fivem), which I use for my FiveM servers.
 
 > Why should I use this over other FiveM eggs?
 
@@ -59,7 +59,8 @@ Ports required to run the server in a table format. You only need the txAdmin po
 
 ## Credits
 
-* **[Parkervcp](https://github.com/parkervcp)** - *Original [egg](https://github.com/parkervcp/eggs/tree/master/gta/fivem).*
+* **[Parkervcp](https://github.com/parkervcp)** - *Original [egg](https://github.com/parkervcp/eggs/tree/master/game_eggs/gta/fivem).*
+* **[Parkervcp](https://github.com/parkervcp)** - *[Git Clone & Pull Script](https://github.com/parkervcp/eggs/blob/master/scripts/git_cloner.sh).*
 * **[Pterodactyl](https://pterodactyl.io/)** - *Creators and maintainers of the Pterodactyl panel.*
 * **[Cfx.re](https://fivem.net/)** - *Creators and maintainers of  FiveM & more <3.*
 
