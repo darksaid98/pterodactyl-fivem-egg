@@ -4,7 +4,7 @@
         "version": "PTDL_v1",
         "update_url": null
     },
-    "exported_at": "2021-06-14T21:11:41-04:00",
+    "exported_at": "2022-02-08T00:38:32-05:00",
     "name": "FiveM",
     "author": "parker@parkervcp.com",
     "description": "A new FiveM egg with additional customization and some minor complex functionality.",
@@ -13,26 +13,125 @@
         "quay.io\/darksaid98\/pterodactyl-images:base_debian"
     ],
     "file_denylist": [],
-    "startup": "$(pwd)\/alpine\/opt\/cfx-server\/ld-musl-x86_64.so.1 --library-path \"$(pwd)\/alpine\/usr\/lib\/v8\/:$(pwd)\/alpine\/lib\/:$(pwd)\/alpine\/usr\/lib\/\" -- $(pwd)\/alpine\/opt\/cfx-server\/FXServer +set citizen_dir $(pwd)\/alpine\/opt\/cfx-server\/citizen\/ +set sv_licenseKey \"{{FIVEM_LICENSE}}\" +set steam_webApiKey \"{{STEAM_WEBAPIKEY}}\" +set sv_maxclients {{MAX_PLAYERS}} +sv_hostname \"{{SERVER_HOSTNAME}}\" +sets sv_projectName \"{{SERVER_PNAME}}\" +sets sv_projectDesc \"{{SERVER_PDESC}}\" +set onesync {{ONESYNC_ENABLED}} +set onesync_population {{ONESYNC_POPULATION}} +set onesync_distanceCullVehicles {{DISTANCECULL_VEHICLES}} +set onesync_forceMigration {{FORCE_MIGRATION}} +set onesync_workaround763185 {{ONESYNC_WORKAROUND}} +set serverProfile default +set svgui_disable {{SVGUI_DISABLE}} +setr voice_use3dAudio {{VOICE_USE3DAUDIO}} +setr voice_useSendingRangeOnly {{VOICE_USESENDINGRANGEONLY}} +setr voice_useNativeAudio {{VOICE_USENATIVEAUDIO}} +set sv_requestParanoia = {{SV_REQUESTPARANOIA}} +set sv_enforceGameBuild {{SV_GAMEBUILD}} +set netevents_logToConsole {{SV_NETTOCONSOLE}} +set netevents_logToFile {{SV_LOGNETTOFILE}} +set txAdminPort {{TXADMIN_PORT}} $( [ \"$TXADMIN_ENABLE\" == \"1\" ] || printf %s '+exec server.cfg' )",
+    "startup": "$(pwd)\/alpine\/opt\/cfx-server\/ld-musl-x86_64.so.1 --library-path \"$(pwd)\/alpine\/usr\/lib\/v8\/:$(pwd)\/alpine\/lib\/:$(pwd)\/alpine\/usr\/lib\/\" -- $(pwd)\/alpine\/opt\/cfx-server\/FXServer +set citizen_dir $(pwd)\/alpine\/opt\/cfx-server\/citizen\/ +set sv_licenseKey \"{{FIVEM_LICENSE}}\" +set steam_webApiKey \"{{STEAM_WEBAPIKEY}}\" +set sv_maxclients {{MAX_PLAYERS}} +sv_hostname \"{{SERVER_HOSTNAME}}\" +sets sv_projectName \"{{SERVER_PNAME}}\" +sets sv_projectDesc \"{{SERVER_PDESC}}\" +set onesync {{ONESYNC_ENABLED}} +set onesync_population {{ONESYNC_POPULATION}} +set onesync_distanceCullVehicles {{DISTANCECULL_VEHICLES}} +set onesync_forceMigration {{FORCE_MIGRATION}} +set onesync_workaround763185 {{ONESYNC_WORKAROUND}} +set serverProfile default +set svgui_disable {{SVGUI_DISABLE}} +setr voice_use3dAudio {{VOICE_USE3DAUDIO}} +setr voice_useSendingRangeOnly {{VOICE_USESENDINGRANGEONLY}} +setr voice_useNativeAudio {{VOICE_USENATIVEAUDIO}} +set sv_requestParanoia = {{SV_REQUESTPARANOIA}} +set sv_enforceGameBuild {{SV_GAMEBUILD}} +set txAdminPort {{TXADMIN_PORT}} $( [ \"$TXADMIN_ENABLE\" == \"1\" ] || printf %s '+exec server.cfg' )",
     "config": {
         "files": "{\r\n    \"server.cfg\": {\r\n        \"parser\": \"file\",\r\n        \"find\": {\r\n            \"endpoint_add_tcp\": \"endpoint_add_tcp \\\"0.0.0.0:{{server.build.default.port}}\\\"\",\r\n            \"endpoint_add_udp\": \"endpoint_add_udp \\\"0.0.0.0:{{server.build.default.port}}\\\"\",\r\n            \"set steam_webApiKey\": \"set steam_webApiKey \\\"{{server.build.env.STEAM_WEBAPIKEY}}\\\"\",\r\n            \"sv_hostname\": \"sv_hostname \\\"{{server.build.env.SERVER_HOSTNAME}}\\\"\",\r\n            \"sets sv_projectName\": \"sets sv_projectName \\\"{{server.build.env.SERVER_PNAME}}\\\"\",\r\n            \"sets sv_projectDesc\": \"sets sv_projectDesc \\\"{{server.build.env.SERVER_PDESC}}\\\"\"\r\n        }\r\n    }\r\n}",
-        "startup": "{\r\n    \"done\": \"succeeded. Welcome!\",\r\n    \"userInteraction\": []\r\n}",
+        "startup": "{\r\n    \"done\": \"succeeded. Welcome!\"\r\n}",
         "logs": "{\r\n    \"custom\": true,\r\n    \"location\": \"logs\/latest.log\"\r\n}",
         "stop": "quit"
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\n# FiveM Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\napt update -y\r\napt install -y tar xz-utils curl git file\r\ncd \/mnt\/server\r\n\r\nRELEASE_PAGE=$(curl -sSL https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/?$RANDOM)\r\n\r\n# Check wether to run installation or update version of script\r\nif [ ! -d \".\/alpine\/\" ] && [ ! -d \".\/resources\/\" ]; then\r\n  # Install script\r\n  echo \"Beginning installation of new FiveM server.\"\r\n\r\n  # Grab download link from FIVEM_VERSION\r\n  if [ \"${FIVEM_VERSION}\" == \"latest\" ] || [ -z ${FIVEM_VERSION} ] ; then\r\n    # Grab latest optional artifact if version requested is latest or null\r\n    LATEST_ARTIFACT=$(echo -e \"${RELEASE_PAGE}\" | grep \"LATEST OPTIONAL\" -B1 | grep -Eo 'href=\".*\/*.tar.xz\"' | grep -Eo '\".*\"' | sed 's\/\\\"\/\/g' | sed 's\/\\.\\\/\/\/1')\r\n    DOWNLOAD_LINK=$(echo https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/${LATEST_ARTIFACT})\r\n  else\r\n    # Grab specific artifact if it exists\r\n    VERSION_LINK=$(echo -e \"${RELEASE_PAGE}\" | grep -Eo 'href=\".*\/*.tar.xz\"' | grep -Eo '\".*\"' | sed 's\/\\\"\/\/g' | sed 's\/\\.\\\/\/\/1' | grep ${FIVEM_VERSION})\r\n    if [ \"${VERSION_LINK}\" == \"\" ]; then\r\n      echo -e \"Defaulting to directly downloading artifact as the version requested was not found on page.\"\r\n    else\r\n      DOWNLOAD_LINK=$(echo https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/${FIVEM_VERSION}\/fx.tar.xz)\r\n    fi\r\n  fi\r\n\r\n  # Download artifact and get filetype\r\n  echo -e \"Running curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*\/}...\"\r\n  curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*\/}\r\n  echo \"Extracting FiveM artifact files...\"\r\n  FILETYPE=$(file -F ',' ${DOWNLOAD_LINK##*\/} | cut -d',' -f2 | cut -d' ' -f2)\r\n\r\n  # Unpack artifact depending on filetype\r\n  if [ \"$FILETYPE\" == \"gzip\" ]; then\r\n    tar xzvf ${DOWNLOAD_LINK##*\/}\r\n  elif [ \"$FILETYPE\" == \"Zip\" ]; then\r\n    unzip ${DOWNLOAD_LINK##*\/}\r\n  elif [ \"$FILETYPE\" == \"XZ\" ]; then\r\n    tar xvf ${DOWNLOAD_LINK##*\/}\r\n  else\r\n    echo -e \"Downloaded artifact of unknown filetype. Exiting.\"\r\n    exit 2\r\n  fi\r\n\r\n  # Delete original bash launch script\r\n  rm -rf ${DOWNLOAD_LINK##*\/} run.sh\r\n\r\n  if [ -e server.cfg ]; then\r\n    echo \"Server config file already exists. Skipping download of new one.\"\r\n  else\r\n    echo \"Downloading default FiveM server config...\"\r\n    curl https:\/\/raw.githubusercontent.com\/darksaid98\/pterodactyl-fivem-egg\/master\/server.cfg >> server.cfg\r\n  fi\r\n\r\n  # Clone resources repo from git or install FiveM default resources\r\n  if [ \"${GIT_ENABLED}\" = \"true\" ] && [ ! -d \".\/resources\/\" ]; then\r\n    # Download from git\r\n    \r\n    echo \"Preparing to clone resources repo from git.\";\r\n    git clone https:\/\/${GIT_USERNAME}:${GIT_TOKEN}@github.com\/${GIT_USERNAME}\/${GIT_REPOSITORYNAME}.git -b ${GIT_BRANCH} \/mnt\/server\/resources && echo \"Downloaded server from git.\" || echo \"Downloading from git failed.\"\r\n  \r\n  else\r\n    # Download FiveM default server resources\r\n\r\n    mkdir -p \/mnt\/server\/resources\r\n    echo \"Preparing to clone default FiveM resources.\"\r\n    git clone https:\/\/github.com\/citizenfx\/cfx-server-data.git \/tmp && echo \"Downloaded server from git.\" || echo \"Downloading from git failed.\"\r\n    cp -Rf \/tmp\/resources\/* resources\/\r\n\r\n  fi\r\n\r\n  mkdir logs\/\r\n  echo \"Installation complete.\"\r\n\r\nelse\r\n  # Update script\r\n  echo \"Beginning update of existing FiveM server artifact.\"\r\n\r\n  # Delete old artifact\r\n  if [ -d \".\/alpine\/\" ]; then\r\n    echo \"Deleting old artifact...\"\r\n    rm -r .\/alpine\/\r\n    while [ -d \".\/alpine\/\" ]; do\r\n      sleep 1s\r\n    done\r\n    echo \"Deleted old artifact files successfully.\"\r\n  fi\r\n\r\n  # Grab download link from FIVEM_VERSION\r\n  if [ \"${FIVEM_VERSION}\" == \"latest\" ] || [ -z ${FIVEM_VERSION} ] ; then\r\n    # Grab latest optional artifact if version requested is latest or null\r\n    LATEST_ARTIFACT=$(echo -e \"${RELEASE_PAGE}\" | grep \"LATEST OPTIONAL\" -B1 | grep -Eo 'href=\".*\/*.tar.xz\"' | grep -Eo '\".*\"' | sed 's\/\\\"\/\/g' | sed 's\/\\.\\\/\/\/1')\r\n    DOWNLOAD_LINK=$(echo https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/${LATEST_ARTIFACT})\r\n  else\r\n    # Grab specific artifact if it exists\r\n    VERSION_LINK=$(echo -e \"${RELEASE_PAGE}\" | grep -Eo 'href=\".*\/*.tar.xz\"' | grep -Eo '\".*\"' | sed 's\/\\\"\/\/g' | sed 's\/\\.\\\/\/\/1' | grep ${FIVEM_VERSION})\r\n    if [ \"${VERSION_LINK}\" == \"\" ]; then\r\n      echo -e \"Defaulting to directly downloading artifact as the version requested was not found on page.\"\r\n    else\r\n      DOWNLOAD_LINK=$(echo https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/${FIVEM_VERSION}\/fx.tar.xz)\r\n    fi\r\n  fi\r\n\r\n  # Download artifact and get filetype\r\n  echo -e \"Running curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*\/}...\"\r\n  curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*\/}\r\n  echo \"Extracting FiveM artifact files...\"\r\n  FILETYPE=$(file -F ',' ${DOWNLOAD_LINK##*\/} | cut -d',' -f2 | cut -d' ' -f2)\r\n\r\n  # Unpack artifact depending on filetype\r\n  if [ \"$FILETYPE\" == \"gzip\" ]; then\r\n    tar xzvf ${DOWNLOAD_LINK##*\/}\r\n  elif [ \"$FILETYPE\" == \"Zip\" ]; then\r\n    unzip ${DOWNLOAD_LINK##*\/}\r\n  elif [ \"$FILETYPE\" == \"XZ\" ]; then\r\n    tar xvf ${DOWNLOAD_LINK##*\/}\r\n  else\r\n    echo -e \"Downloaded artifact of unknown filetype. Exiting.\"\r\n    exit 2\r\n  fi\r\n\r\n  # Delete original bash launch script\r\n  rm -rf ${DOWNLOAD_LINK##*\/} run.sh\r\n\r\n  echo \"Update complete.\"\r\n\r\nfi",
+            "script": "#!\/bin\/ash\r\n# FiveM Installation Script\r\n#\r\n# Server Files: \/mnt\/server\r\napt update -y\r\napt install -y tar xz-utils curl git file jq unzip\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\n\r\nRELEASE_PAGE=$(curl -sSL https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/?$RANDOM)\r\n\r\n# Check wether to run installation or update version of script\r\nif [ ! -d \".\/alpine\/\" ] && [ ! -d \".\/resources\/\" ]; then\r\n  # Install script\r\n  echo \"Beginning installation of new FiveM server.\"\r\n\r\n  # Grab download link from FIVEM_VERSION\r\n  if [ \"${FIVEM_VERSION}\" == \"latest\" ] || [ -z ${FIVEM_VERSION} ] ; then\r\n    # Grab latest optional artifact if version requested is latest or null\r\n    LATEST_ARTIFACT=$(echo -e \"${RELEASE_PAGE}\" | grep \"LATEST OPTIONAL\" -B1 | grep -Eo 'href=\".*\/*.tar.xz\"' | grep -Eo '\".*\"' | sed 's\/\\\"\/\/g' | sed 's\/\\.\\\/\/\/1')\r\n    DOWNLOAD_LINK=$(echo https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/${LATEST_ARTIFACT})\r\n  else\r\n    # Grab specific artifact if it exists\r\n    VERSION_LINK=$(echo -e \"${RELEASE_PAGE}\" | grep -Eo 'href=\".*\/*.tar.xz\"' | grep -Eo '\".*\"' | sed 's\/\\\"\/\/g' | sed 's\/\\.\\\/\/\/1' | grep ${FIVEM_VERSION})\r\n    if [ \"${VERSION_LINK}\" == \"\" ]; then\r\n      echo -e \"Defaulting to directly downloading artifact as the version requested was not found on page.\"\r\n    else\r\n      DOWNLOAD_LINK=$(echo https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/${FIVEM_VERSION}\/fx.tar.xz)\r\n    fi\r\n  fi\r\n\r\n  # Download artifact and get filetype\r\n  echo -e \"Running curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*\/}...\"\r\n  curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*\/}\r\n  echo \"Extracting FiveM artifact files...\"\r\n  FILETYPE=$(file -F ',' ${DOWNLOAD_LINK##*\/} | cut -d',' -f2 | cut -d' ' -f2)\r\n\r\n  # Unpack artifact depending on filetype\r\n  if [ \"$FILETYPE\" == \"gzip\" ]; then\r\n    tar xzvf ${DOWNLOAD_LINK##*\/}\r\n  elif [ \"$FILETYPE\" == \"Zip\" ]; then\r\n    unzip ${DOWNLOAD_LINK##*\/}\r\n  elif [ \"$FILETYPE\" == \"XZ\" ]; then\r\n    tar xvf ${DOWNLOAD_LINK##*\/}\r\n  else\r\n    echo -e \"Downloaded artifact of unknown filetype. Exiting.\"\r\n    exit 2\r\n  fi\r\n\r\n  # Delete original bash launch script\r\n  rm -rf ${DOWNLOAD_LINK##*\/} run.sh\r\n\r\n  if [ -e server.cfg ]; then\r\n    echo \"Server config file already exists. Skipping download of new one.\"\r\n  else\r\n    echo \"Downloading default FiveM server config...\"\r\n    curl https:\/\/raw.githubusercontent.com\/darksaid98\/pterodactyl-fivem-egg\/master\/server.cfg >> server.cfg\r\n  fi\r\n\r\n  # Clone resources repo from git or install FiveM default resources\r\n  if [ \"${GIT_ENABLED}\" == \"1\" ] && [ ! -d \"\/mnt\/server\/resources\" ]; then\r\n    # Download from git\r\n    \r\n    echo \"Preparing to clone resources repo from git.\";\r\n\r\n    if [[ ${GIT_REPOURL} != *.git ]]; then # Add .git at end of URL\r\n      GIT_REPOURL=${GIT_REPOURL}.git\r\n    fi\r\n\r\n    if [ -z \"${GIT_USERNAME}\" ] && [ -z \"${GIT_TOKEN}\" ]; then # Check for git username & token\r\n      echo -e \"Git Username or Git Token was not specified.\"\r\n    else\r\n      GIT_REPOURL=\"https:\/\/${GIT_USERNAME}:${GIT_TOKEN}@$(echo -e ${GIT_REPOURL} | cut -d\/ -f3-)\"\r\n    fi\r\n\r\n    if [ -z ${GIT_BRANCH} ]; then\r\n      echo -e \"Cloning default branch into \/resources\/*.\"\r\n      git clone ${GIT_REPOURL} \/mnt\/server\/resources\r\n    else\r\n      echo -e \"Cloning ${GIT_BRANCH} branch into \/resources\/*.\"\r\n      git clone --single-branch --branch ${GIT_BRANCH} ${GIT_REPOURL} \/mnt\/server\/resources && echo \"Finished cloning into \/resources\/* from Git.\" || echo \"Failed cloning into \/resources\/* from Git.\"\r\n    fi\r\n\r\n  else\r\n    # Download FiveM default server resources\r\n\r\n    mkdir -p \/mnt\/server\/resources\r\n    echo \"Preparing to clone default FiveM resources.\"\r\n    git clone https:\/\/github.com\/citizenfx\/cfx-server-data.git \/tmp && echo \"Downloaded server from git.\" || echo \"Downloading from git failed.\"\r\n    cp -Rf \/tmp\/resources\/* resources\/\r\n\r\n  fi\r\n\r\n  mkdir logs\/\r\n  echo \"Installation complete.\"\r\n\r\nelse\r\n  # Update script\r\n  echo \"Beginning update of existing FiveM server artifact.\"\r\n\r\n  # Delete old artifact\r\n  if [ -d \".\/alpine\/\" ]; then\r\n    echo \"Deleting old artifact...\"\r\n    rm -r .\/alpine\/\r\n    while [ -d \".\/alpine\/\" ]; do\r\n      sleep 1s\r\n    done\r\n    echo \"Deleted old artifact files successfully.\"\r\n  fi\r\n\r\n  # Grab download link from FIVEM_VERSION\r\n  if [ \"${FIVEM_VERSION}\" == \"latest\" ] || [ -z ${FIVEM_VERSION} ] ; then\r\n    # Grab latest optional artifact if version requested is latest or null\r\n    LATEST_ARTIFACT=$(echo -e \"${RELEASE_PAGE}\" | grep \"LATEST OPTIONAL\" -B1 | grep -Eo 'href=\".*\/*.tar.xz\"' | grep -Eo '\".*\"' | sed 's\/\\\"\/\/g' | sed 's\/\\.\\\/\/\/1')\r\n    DOWNLOAD_LINK=$(echo https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/${LATEST_ARTIFACT})\r\n  else\r\n    # Grab specific artifact if it exists\r\n    VERSION_LINK=$(echo -e \"${RELEASE_PAGE}\" | grep -Eo 'href=\".*\/*.tar.xz\"' | grep -Eo '\".*\"' | sed 's\/\\\"\/\/g' | sed 's\/\\.\\\/\/\/1' | grep ${FIVEM_VERSION})\r\n    if [ \"${VERSION_LINK}\" == \"\" ]; then\r\n      echo -e \"Defaulting to directly downloading artifact as the version requested was not found on page.\"\r\n    else\r\n      DOWNLOAD_LINK=$(echo https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/${FIVEM_VERSION}\/fx.tar.xz)\r\n    fi\r\n  fi\r\n\r\n  # Download artifact and get filetype\r\n  echo -e \"Running curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*\/}...\"\r\n  curl -sSL ${DOWNLOAD_LINK} -o ${DOWNLOAD_LINK##*\/}\r\n  echo \"Extracting FiveM artifact files...\"\r\n  FILETYPE=$(file -F ',' ${DOWNLOAD_LINK##*\/} | cut -d',' -f2 | cut -d' ' -f2)\r\n\r\n  # Unpack artifact depending on filetype\r\n  if [ \"$FILETYPE\" == \"gzip\" ]; then\r\n    tar xzvf ${DOWNLOAD_LINK##*\/}\r\n  elif [ \"$FILETYPE\" == \"Zip\" ]; then\r\n    unzip ${DOWNLOAD_LINK##*\/}\r\n  elif [ \"$FILETYPE\" == \"XZ\" ]; then\r\n    tar xvf ${DOWNLOAD_LINK##*\/}\r\n  else\r\n    echo -e \"Downloaded artifact of unknown filetype. Exiting.\"\r\n    exit 2\r\n  fi\r\n\r\n  # Delete original bash launch script\r\n  rm -rf ${DOWNLOAD_LINK##*\/} run.sh\r\n\r\n  echo \"Update complete.\"\r\n\r\nfi",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
     },
     "variables": [
         {
+            "name": "FiveM License Key",
+            "description": "Required to start the service. Get your keys at https:\/\/keymaster.fivem.net\/",
+            "env_variable": "FIVEM_LICENSE",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:33"
+        },
+        {
+            "name": "Steam Web Api Key",
+            "description": "Use your Steam WebApiKey or set to 'none'. Get your key at https:\/\/steamcommunity.com\/dev\/apikey\/.",
+            "env_variable": "STEAM_WEBAPIKEY",
+            "default_value": "none",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string"
+        },
+        {
+            "name": "FiveM Version",
+            "description": "Downloads the latest or specified FiveM server artifact.\r\n\r\nSet to 'latest' or empty to download the latest optional artifact.\r\nOr specify a direct version to download like this '1383-e5ea040353ce1b8bc86e37982bf5d888938e3096'.\r\n\r\nYou can find the latest version from here - https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/\r\n\r\nPressing 'Reinstall Server' in 'Settings' will remove the currently installed server artifact and replace it with an updated one.",
+            "env_variable": "FIVEM_VERSION",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:50"
+        },
+        {
+            "name": "Git Enabled",
+            "description": "Enabling this will clone or pull the specified repository into \/resources on each server startup. If you are installing the server now, this will clone the git repo.",
+            "env_variable": "GIT_ENABLED",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean"
+        },
+        {
+            "name": "Git Username",
+            "description": "The username used to authenticate with git.",
+            "env_variable": "GIT_USERNAME",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string|max:39"
+        },
+        {
+            "name": "Git Token",
+            "description": "The password used to authenticate with git.\r\n\r\nIt's best practice to use a Personal Access Token.\r\nhttps:\/\/github.com\/settings\/tokens\r\nhttps:\/\/gitlab.com\/-\/profile\/personal_access_tokens",
+            "env_variable": "GIT_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "Git Repository URL",
+            "description": "URL to Git repository.\r\n\r\nExample: https:\/\/github.com\/citizenfx\/cfx-server-data",
+            "env_variable": "GIT_REPOURL",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "Git Branch",
+            "description": "The name of the branch you wish to use. The default will be used if this is not specified.",
+            "env_variable": "GIT_BRANCH",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "nullable|string"
+        },
+        {
+            "name": "Enable txAdmin",
+            "description": "Enables txAdmin.\r\n\r\n(default is off)",
+            "env_variable": "TXADMIN_ENABLE",
+            "default_value": "0",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean"
+        },
+        {
+            "name": "txAdmin Port",
+            "description": "The port for the txAdmin panel.",
+            "env_variable": "TXADMIN_PORT",
+            "default_value": "40120",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:5"
+        },
+        {
+            "name": "FiveM Game Build",
+            "description": "Sets the sv_enforceGameBuild convar. This specifies the client GTA build the server should be on. \r\nRead docs for possible values: https:\/\/docs.fivem.net\/docs\/server-manual\/server-commands\/#sv_enforcegamebuild-build",
+            "env_variable": "SV_GAMEBUILD",
+            "default_value": "2545",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string|max:4"
+        },
+        {
             "name": "Max Players",
             "description": "Sets the maximum player count.",
             "env_variable": "MAX_PLAYERS",
-            "default_value": "48",
+            "default_value": "8",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|integer|between:1,2048"
@@ -59,28 +158,10 @@
             "name": "Project Description",
             "description": "The description that shows up in the server browser.",
             "env_variable": "SERVER_PDESC",
-            "default_value": "Default project description. Please change this in config.",
+            "default_value": "Default project description. Please change me.",
             "user_viewable": true,
             "user_editable": true,
             "rules": "required|string"
-        },
-        {
-            "name": "FiveM Version",
-            "description": "Downloads the latest or specified FiveM server artifact.\r\n\r\nSet to 'latest' or empty to download the latest optional artifact.\r\nOr specify a direct version to download like this '1383-e5ea040353ce1b8bc86e37982bf5d888938e3096'.\r\n\r\nYou can find the latest version from here - https:\/\/runtime.fivem.net\/artifacts\/fivem\/build_proot_linux\/master\/\r\n\r\nPressing 'Reinstall Server' in 'Settings' will remove the currently installed server artifact and replace it with an updated one.",
-            "env_variable": "FIVEM_VERSION",
-            "default_value": "",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "nullable|string|max:50"
-        },
-        {
-            "name": "FiveM Game Build",
-            "description": "The client GTA build the server should be on. Current possible values are:\r\n2189: Cayo Perico Update. \r\n2060: Diamond Casino Heist Update. \r\n1604: Arena Wars Update. The most stable game version available.",
-            "env_variable": "SV_GAMEBUILD",
-            "default_value": "1604",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:4"
         },
         {
             "name": "Onesync",
@@ -95,64 +176,64 @@
             "name": "Onesync Distance Cull Vehicles",
             "description": "Only use this with Onesync enabled! Enable or disable distance culling for vehicles.",
             "env_variable": "DISTANCECULL_VEHICLES",
-            "default_value": "true",
+            "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|in:0,false,1,true"
+            "rules": "required|boolean"
         },
         {
             "name": "Onesync Force Migration",
             "description": "Only use this with Onesync enabled! Enable or disable force migration.",
             "env_variable": "FORCE_MIGRATION",
-            "default_value": "true",
+            "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Onesync Workaround",
-            "description": "Enable onesync workaround.",
-            "env_variable": "ONESYNC_WORKAROUND",
-            "default_value": "true",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
+            "rules": "required|boolean"
         },
         {
             "name": "Onesync Population",
             "description": "Enables or disables population on Onesync.",
             "env_variable": "ONESYNC_POPULATION",
-            "default_value": "true",
+            "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|in:0,false,1,true"
+            "rules": "required|boolean"
         },
         {
-            "name": "UseNativeAudio",
-            "description": "Enable or disable Native audio. You should be using this for the best possible VOIP. Greatly superior to 'Use3dAudio'.",
-            "env_variable": "VOICE_USENATIVEAUDIO",
-            "default_value": "true",
+            "name": "Onesync Workaround",
+            "description": "Enable onesync workaround.",
+            "env_variable": "ONESYNC_WORKAROUND",
+            "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "UseSendingRangeOnly",
-            "description": "Use sending range only.",
-            "env_variable": "VOICE_USESENDINGRANGEONLY",
-            "default_value": "true",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
+            "rules": "required|boolean"
         },
         {
             "name": "Use3dAudio",
             "description": "Enable or disable 3d audio. Does nothing if 'UseNativeAudio' is set to true.",
             "env_variable": "VOICE_USE3DAUDIO",
-            "default_value": "false",
+            "default_value": "0",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|in:0,false,1,true"
+            "rules": "required|boolean"
+        },
+        {
+            "name": "UseSendingRangeOnly",
+            "description": "Use sending range only.",
+            "env_variable": "VOICE_USESENDINGRANGEONLY",
+            "default_value": "1",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean"
+        },
+        {
+            "name": "UseNativeAudio",
+            "description": "Enable or disable Native audio. You should be using this for the best possible VOIP. Greatly superior to 'Use3dAudio'.",
+            "env_variable": "VOICE_USENATIVEAUDIO",
+            "default_value": "1",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|boolean"
         },
         {
             "name": "Request Paranoia",
@@ -164,121 +245,13 @@
             "rules": "required|integer|between:0,3"
         },
         {
-            "name": "Log Network Events To Console",
-            "description": "Logs net events to the server console. Read this commit: https:\/\/github.com\/citizenfx\/fivem\/pull\/658\/commits\/c4e3d98e30a7aeefd647d13c9570517cbf6b4a1a",
-            "env_variable": "SV_NETTOCONSOLE",
-            "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Log Network Events To File",
-            "description": "Log net events to a file. Example value 'filename.txt', or leave empty to disable. Read commit: https:\/\/github.com\/citizenfx\/fivem\/pull\/658\/commits\/a6a7bfa88aee09bf585de51f320f2b8f5127c063",
-            "env_variable": "SV_LOGNETTOFILE",
-            "default_value": "",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "nullable|string"
-        },
-        {
-            "name": "FiveM License Key",
-            "description": "Required to start the service. Get your keys at https:\/\/keymaster.fivem.net\/",
-            "env_variable": "FIVEM_LICENSE",
-            "default_value": "",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:32"
-        },
-        {
-            "name": "Steam Web Api Key",
-            "description": "Use your Steam WebApiKey or set to 'none'. Get your key at https:\/\/steamcommunity.com\/dev\/apikey\/.",
-            "env_variable": "STEAM_WEBAPIKEY",
-            "default_value": "none",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string"
-        },
-        {
-            "name": "Clear Cache",
-            "description": "Do you wish to automatically clear the server cache folder on startup?",
-            "env_variable": "CACHE_CLEAR",
-            "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Git Automatic Updates",
-            "description": "Do you wish to enable automatic updates from GitHub? If you are installing the server now, this will download the git repo.",
-            "env_variable": "GIT_ENABLED",
-            "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "Git Token",
-            "description": "The token used to authenticate with GitHub for auto-update.",
-            "env_variable": "GIT_TOKEN",
-            "default_value": "0",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:50"
-        },
-        {
-            "name": "Git Username",
-            "description": "The user with access to the repositories GitHub username.",
-            "env_variable": "GIT_USERNAME",
-            "default_value": "danksaid98",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:50"
-        },
-        {
-            "name": "Git Repository",
-            "description": "The name of the repository you wish to use.",
-            "env_variable": "GIT_REPOSITORYNAME",
-            "default_value": "reponamehere",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:100"
-        },
-        {
-            "name": "Git Branch",
-            "description": "The name of the branch you wish to use.",
-            "env_variable": "GIT_BRANCH",
-            "default_value": "master",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:30"
-        },
-        {
-            "name": "Enable txAdmin",
-            "description": "Enables txAdmin.\\r\\n\\r\\nset to true to enable. (default is 0 or false)",
-            "env_variable": "TXADMIN_ENABLE",
-            "default_value": "false",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|in:0,false,1,true"
-        },
-        {
-            "name": "txAdmin Port",
-            "description": "The port for the txAdmin panel.",
-            "env_variable": "TXADMIN_PORT",
-            "default_value": "40120",
-            "user_viewable": true,
-            "user_editable": true,
-            "rules": "required|string|max:20"
-        },
-        {
             "name": "Svgui Disabled",
-            "description": "Enabel or disable svgui, doesn't work on linux anyways.",
+            "description": "Enable or disable svgui, doesn't work on Linux anyway so I'm not sure why you'd use this.",
             "env_variable": "SVGUI_DISABLE",
-            "default_value": "true",
+            "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|in:0,false,1,true"
+            "rules": "required|boolean"
         }
     ]
 }

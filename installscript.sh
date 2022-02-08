@@ -3,7 +3,9 @@
 #
 # Server Files: /mnt/server
 apt update -y
-apt install -y tar xz-utils curl git file
+apt install -y tar xz-utils curl git file jq unzip
+
+mkdir -p /mnt/server
 cd /mnt/server
 
 RELEASE_PAGE=$(curl -sSL https://runtime.fivem.net/artifacts/fivem/build_proot_linux/master/?$RANDOM)
@@ -57,12 +59,29 @@ if [ ! -d "./alpine/" ] && [ ! -d "./resources/" ]; then
   fi
 
   # Clone resources repo from git or install FiveM default resources
-  if [ "${GIT_ENABLED}" = "true" ] && [ ! -d "./resources/" ]; then
+  if [ "${GIT_ENABLED}" == "1" ] && [ ! -d "/mnt/server/resources" ]; then
     # Download from git
     
     echo "Preparing to clone resources repo from git.";
-    git clone https://${GIT_USERNAME}:${GIT_TOKEN}@github.com/${GIT_USERNAME}/${GIT_REPOSITORYNAME}.git -b ${GIT_BRANCH} /mnt/server/resources && echo "Downloaded server from git." || echo "Downloading from git failed."
-  
+
+    if [[ ${GIT_REPOURL} != *.git ]]; then # Add .git at end of URL
+      GIT_REPOURL=${GIT_REPOURL}.git
+    fi
+
+    if [ -z "${GIT_USERNAME}" ] && [ -z "${GIT_TOKEN}" ]; then # Check for git username & token
+      echo -e "Git Username or Git Token was not specified."
+    else
+      GIT_REPOURL="https://${GIT_USERNAME}:${GIT_TOKEN}@$(echo -e ${GIT_REPOURL} | cut -d/ -f3-)"
+    fi
+
+    if [ -z ${GIT_BRANCH} ]; then
+      echo -e "Cloning default branch into /resources/*."
+      git clone ${GIT_REPOURL} /mnt/server/resources
+    else
+      echo -e "Cloning ${GIT_BRANCH} branch into /resources/*."
+      git clone --single-branch --branch ${GIT_BRANCH} ${GIT_REPOURL} /mnt/server/resources && echo "Finished cloning into /resources/* from Git." || echo "Failed cloning into /resources/* from Git."
+    fi
+
   else
     # Download FiveM default server resources
 
