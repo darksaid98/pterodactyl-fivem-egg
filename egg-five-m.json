@@ -1,7 +1,7 @@
 {
     "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
     "meta": {
-        "version": "PTDL_v1",
+        "version": "PTDL_v2",
         "update_url": null
     },
     "exported_at": "2023-09-27T00:06:46+02:00",
@@ -35,7 +35,8 @@
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string|max:33"
+            "rules": "required|string|max:33",
+            "field_type": "text"
         },
         {
             "name": "Steam Web Api Key",
@@ -44,7 +45,8 @@
             "default_value": "none",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string"
+            "rules": "required|string",
+            "field_type": "text"
         },
         {
             "name": "FiveM Version",
@@ -53,7 +55,8 @@
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "nullable|string|max:50"
+            "rules": "nullable|string|max:50",
+            "field_type": "text"
         },
         {
             "name": "Git Enabled",
@@ -62,7 +65,8 @@
             "default_value": "0",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "Git Username",
@@ -71,7 +75,8 @@
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "nullable|string|max:39"
+            "rules": "nullable|string|max:39",
+            "field_type": "text"
         },
         {
             "name": "Git Token",
@@ -80,7 +85,8 @@
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "nullable|string"
+            "rules": "nullable|string",
+            "field_type": "text"
         },
         {
             "name": "Git Repository URL",
@@ -89,7 +95,8 @@
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "nullable|string"
+            "rules": "nullable|string",
+            "field_type": "text"
         },
         {
             "name": "Git Branch",
@@ -98,7 +105,8 @@
             "default_value": "",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "nullable|string"
+            "rules": "nullable|string",
+            "field_type": "text"
         },
         {
             "name": "Enable txAdmin",
@@ -107,7 +115,8 @@
             "default_value": "0",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "txAdmin Port",
@@ -116,16 +125,18 @@
             "default_value": "40120",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string|max:5"
+            "rules": "required|string|max:5",
+            "field_type": "text"
         },
         {
             "name": "FiveM Game Build",
             "description": "Sets the sv_enforceGameBuild convar. This specifies the client GTA build the server should be on. \r\nRead docs for possible values: https:\/\/docs.fivem.net\/docs\/server-manual\/server-commands\/#sv_enforcegamebuild-build",
             "env_variable": "SV_GAMEBUILD",
-            "default_value": "2545",
+            "default_value": "2944",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string|max:4"
+            "rules": "required|string|max:4",
+            "field_type": "text"
         },
         {
             "name": "Max Players",
@@ -134,7 +145,8 @@
             "default_value": "8",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|integer|between:1,2048"
+            "rules": "required|integer|between:1,2048",
+            "field_type": "text"
         },
         {
             "name": "Server Hostname",
@@ -143,7 +155,8 @@
             "default_value": "My new FXServer!",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string"
+            "rules": "required|string",
+            "field_type": "text"
         },
         {
             "name": "Project Name",
@@ -152,7 +165,8 @@
             "default_value": "My Server Name",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string"
+            "rules": "required|string",
+            "field_type": "text"
         },
         {
             "name": "Project Description",
@@ -161,7 +175,8 @@
             "default_value": "Default project description. Please change me.",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|string"
+            "rules": "required|string",
+            "field_type": "text"
         },
         {
             "name": "Onesync",
@@ -170,7 +185,8 @@
             "default_value": "on",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|in:on,off,legacy"
+            "rules": "required|in:on,off,legacy",
+            "field_type": "text"
         },
         {
             "name": "Onesync Distance Cull Vehicles",
@@ -179,7 +195,8 @@
             "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "Onesync Force Migration",
@@ -188,7 +205,8 @@
             "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "Onesync Population",
@@ -197,7 +215,8 @@
             "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "Onesync Workaround",
@@ -206,7 +225,8 @@
             "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "Use3dAudio",
@@ -215,7 +235,8 @@
             "default_value": "0",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "UseSendingRangeOnly",
@@ -224,7 +245,8 @@
             "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "UseNativeAudio",
@@ -233,7 +255,8 @@
             "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         },
         {
             "name": "Request Paranoia",
@@ -242,7 +265,8 @@
             "default_value": "0",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|integer|between:0,3"
+            "rules": "required|integer|between:0,3",
+            "field_type": "text"
         },
         {
             "name": "Svgui Disabled",
@@ -251,7 +275,8 @@
             "default_value": "1",
             "user_viewable": true,
             "user_editable": true,
-            "rules": "required|boolean"
+            "rules": "required|boolean",
+            "field_type": "text"
         }
     ]
 }
