@@ -4,13 +4,13 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-09-27T00:06:46+02:00",
+    "exported_at": "2023-09-27T00:39:19+02:00",
     "name": "FiveM",
     "author": "parker@parkervcp.com",
     "description": "A new FiveM egg with additional customization and some minor complex functionality.",
     "features": null,
     "docker_images": {
-        "ghcr.io\/darksaid98\/yolks:debian": "ghcr.io\/darksaid98\/yolks:debian"
+        "ghcr.io\/darksaid98\/games:fivem": "ghcr.io\/darksaid98\/games:fivem"
     },
     "file_denylist": [],
     "startup": "$(pwd)\/alpine\/opt\/cfx-server\/ld-musl-x86_64.so.1 --library-path \"$(pwd)\/alpine\/usr\/lib\/v8\/:$(pwd)\/alpine\/lib\/:$(pwd)\/alpine\/usr\/lib\/\" -- $(pwd)\/alpine\/opt\/cfx-server\/FXServer +set citizen_dir $(pwd)\/alpine\/opt\/cfx-server\/citizen\/ +set sv_licenseKey \"{{FIVEM_LICENSE}}\" +set steam_webApiKey \"{{STEAM_WEBAPIKEY}}\" +set sv_maxclients {{MAX_PLAYERS}} +sv_hostname \"{{SERVER_HOSTNAME}}\" +sets sv_projectName \"{{SERVER_PNAME}}\" +sets sv_projectDesc \"{{SERVER_PDESC}}\" +set onesync {{ONESYNC_ENABLED}} +set onesync_population {{ONESYNC_POPULATION}} +set onesync_distanceCullVehicles {{DISTANCECULL_VEHICLES}} +set onesync_forceMigration {{FORCE_MIGRATION}} +set onesync_workaround763185 {{ONESYNC_WORKAROUND}} +set serverProfile default +set svgui_disable {{SVGUI_DISABLE}} +setr voice_use3dAudio {{VOICE_USE3DAUDIO}} +setr voice_useSendingRangeOnly {{VOICE_USESENDINGRANGEONLY}} +setr voice_useNativeAudio {{VOICE_USENATIVEAUDIO}} +set sv_requestParanoia = {{SV_REQUESTPARANOIA}} +set sv_enforceGameBuild {{SV_GAMEBUILD}} +set txAdminPort {{TXADMIN_PORT}} $( [ \"$TXADMIN_ENABLE\" == \"1\" ] || printf %s '+exec server.cfg' )",
