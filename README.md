@@ -10,7 +10,7 @@ This fork includes an easy way of updating server artifacts, automatic pulls fro
 
 > I have a question/could you help me set this up?
 
-Will I help you set this up? No. However if you have any questions I'm usually available on discord `darksaid98#6092` and would be happy to answer any question you may have.
+Will I help you set this up? No. However if you have any questions I'm usually available in my friends FiveM oriented [discord server](https://discord.gg/cG5uWvUcM6), and would be happy to answer any question you may have.
 
 ## Updating Server Artifact
 
